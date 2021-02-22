@@ -1,0 +1,60 @@
+<html>
+
+<head>
+	<script src='js/jquery-3.5.1.min.js'></script>
+	<script src='js/number.js'></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+		#the_number {
+			font-size: max(30vh, 20em);
+			text-align: center;
+		}
+
+		#good {
+			background-color: green;
+			width: 49%;
+			height: 100px;
+		}
+
+		#bad {
+			background-color: red;
+			width: 49%;
+			height: 100px;
+		}
+
+		#sound {
+			width: 33%;
+			height: 100px;
+		}
+
+		#start {
+			width: 66%;
+			height: 200px;
+		}
+
+		#game {
+			display: none;
+			width: 100%;
+		}
+
+		#header {
+			margin-top: 50px;
+			text-align: center;
+		}
+	</style>
+</head>
+
+<body>
+	<div id='header'>
+		<button id='start'>Start</button>
+	</div>
+	<div id='game'>
+		<div id='the_number'></div>
+		<div id='buttons'>
+			<button id='good'>Good</button>
+			<button id='bad'>Bad</button>
+		</div>
+	</div>
+</body>
+
+</html>
