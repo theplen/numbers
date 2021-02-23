@@ -10,9 +10,6 @@ $(document).ready(function () {
 	for (var i = min_number; i <= max_number; i++) {
 		results[i] = 1;
 	}
-
-	console.log(results);
-	next();
 	
 	$("#start").on("click", function () {
 		$("#header").hide();
@@ -24,21 +21,29 @@ $(document).ready(function () {
 	$("#bad").on("click", function () {
 		bad();
 	});
+	
+	console.log(results);
+	next();
 });
 
-
+recognition.onend = (event) => {
+	if(finalTranscript.trim() == String(current)){
+		sayit("correct");
+		good();
+	}else{
+		sayit(current);
+		bad();
+	}
+	finalTranscript = "";
+}
 
 function next() {
-	
-	
 	let items = [];
 	for (var i = min_number; i <= max_number; i++) {
 		for (var ii = 0; ii < Math.ceil(results[i] * random_multipler); ii++) {
 			items.push(i);
 		}
 	}
-
-
 
 	console.log(items);
 	if(items.length == 0){
@@ -47,26 +52,30 @@ function next() {
 		return;
 	}
 
-	numbers_remaining = [...new Set(items)].length;
 
+	// Get new number but different then last number
 	let new_number = null;
+	numbers_remaining = [...new Set(items)].length;
 	while(true){
 		new_number = items[Math.floor(Math.random() * items.length)];
 		if(numbers_remaining == 1 || new_number != current){
 			break;
 		}
 	}
-	current = new_number;
-	$("#the_number").html(current);
-	console.log(current);
 
-	// $("#buttons").hide();
-	timer1 = window.setTimeout(function(){
-		sayit(current);
-		// window.setTimeout(function(){
-		// 	$("#buttons").show();
-		// }, 500);
-	}, 2000);
+	current = new_number;
+	console.log(current);
+	$("#the_number").fadeTo("fast", 0, function(){
+		console.log("done fading out");
+		$("#the_number").html(current);
+		$("#the_number").fadeTo("fast", 1, function(){
+			console.log("done fading back in");
+			recognition.start();
+			timer1 = window.setTimeout(function(){
+				recognition.stop();
+			}, 6000);
+		});
+	});
 }
 
 
@@ -77,13 +86,15 @@ function sayit(msg_text) {
 }
 
 function bad() {
-	results[current] = Math.min(2, results[current] + 0.1);
+	results[current] = Math.min(2, results[current] + 1);
 	window.clearTimeout(timer1);
-	next();
+	window.setTimeout(function(){
+		next();
+	}, 500);
 }
 
 function good() {
-	results[current] = Math.max(0, results[current] - 0.5);
+	results[current] = Math.max(0, results[current] - 1);
 	window.clearTimeout(timer1);
 	next();
 }

@@ -2,9 +2,12 @@
 
 <head>
 	<script src='js/jquery-3.5.1.min.js'></script>
-	<script src='js/number.js'></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<style>
+		body{
+			font-family: 'Arial', 'Courier New', Courier, monospace;
+		}
+
 		#the_number {
 			font-size: max(30vh, 20em);
 			text-align: center;
@@ -41,6 +44,9 @@
 			margin-top: 50px;
 			text-align: center;
 		}
+		#buttons {
+			display: none;
+		}
 	</style>
 </head>
 
@@ -49,12 +55,15 @@
 		<button id='start'>Start</button>
 	</div>
 	<div id='game'>
-		<div id='the_number'></div>
+		<div id='the_number'>#</div>
 		<div id='buttons'>
 			<button id='good'>Good</button>
 			<button id='bad'>Bad</button>
 		</div>
 	</div>
+	<div class='output'></div>
+	<script src='js/stt.js'></script>
+	<script src='js/number.js'></script>
 </body>
 
 </html>
