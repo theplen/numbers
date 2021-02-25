@@ -2,68 +2,23 @@
 
 <head>
 	<script src='js/jquery-3.5.1.min.js'></script>
+	<script src='js/main.js'></script>
+	<script src='js/index.js'></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<style>
-		body{
-			font-family: 'Arial', 'Courier New', Courier, monospace;
-		}
-
-		#the_number {
-			font-size: max(30vh, 20em);
-			text-align: center;
-		}
-
-		#good {
-			background-color: green;
-			width: 49%;
-			height: 100px;
-		}
-
-		#bad {
-			background-color: red;
-			width: 49%;
-			height: 100px;
-		}
-
-		#sound {
-			width: 33%;
-			height: 100px;
-		}
-
-		#start {
-			width: 66%;
-			height: 200px;
-		}
-
-		#game {
-			display: none;
-			width: 100%;
-		}
-
-		#header {
-			margin-top: 50px;
-			text-align: center;
-		}
-		#buttons {
-			display: none;
-		}
-	</style>
+	<link rel="stylesheet" href="css/main.css">
 </head>
 
 <body>
-	<div id='header'>
-		<button id='start'>Start</button>
-	</div>
-	<div id='game'>
-		<div id='the_number'>#</div>
-		<div id='buttons'>
-			<button id='good'>Good</button>
-			<button id='bad'>Bad</button>
-		</div>
-	</div>
-	<div class='output'></div>
-	<script src='js/stt.js'></script>
-	<script src='js/number.js'></script>
+	<form action='game.html' method='GET'>
+		<label>Staring Number</label>
+		<input type='text' name='start' value='10' />
+		<label>Ending Number</label>
+		<input type='text' name='end' value='20' />
+		<label>Timeout (seconds)</label>
+		<input type='text' name='timeout' value='6' />
+
+		<input type='submit' name='submit' value='Start' />
+	</form>
 </body>
 
 </html>

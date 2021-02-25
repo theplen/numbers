@@ -1,52 +1,66 @@
-var min_number = 0;
-var max_number = 20;
+var minNumber = 0;
+var maxNumber = 20;
 var current = null;
 var results = {};
-var random_multipler = 3;
+var randomMultipler = 3;
 var timer1 = null;
+var timeout = 6;
 
 
 $(document).ready(function () {
-	for (var i = min_number; i <= max_number; i++) {
-		results[i] = 1;
-	}
-	
-	$("#start").on("click", function () {
-		$("#header").hide();
+	$("#header").hide();
+
+	minNumber = parseInt(getParam('start'));
+	maxNumber = parseInt(getParam('end'));
+	timeout = parseFloat(getParam('timeout'));
+
+	// Init results
+	let skip = [];
+	for (var i = minNumber; i <= maxNumber; i++) {
+		if (!skip.includes(i)) {
+			results[i] = 1;
+		}
+	}	
+
+	// Button click functions
+	$("#home").on('click', function(){
+		window.location = "./?start=" + minNumber + "&end=" + maxNumber + "&timeout=" + timeout;
+	})
+	$("#start").on('click', function(){
+		$(".start").hide();
 		$("#game").show();
+		$("#header").show();
+		next();
 	});
-	$("#good").on("click", function () {
-		good();
-	});
-	$("#bad").on("click", function () {
-		bad();
-	});
-	
-	console.log(results);
-	next();
 });
 
 recognition.onend = (event) => {
-	if(finalTranscript.trim() == String(current)){
+	isValid = false;
+	recognition.finalTranscript.forEach(function (t) {
+		if (t.trim() == String(current)) {
+			isValid = true;
+		}
+	});
+	if (isValid) {
 		sayit("correct");
 		good();
-	}else{
+	} else {
 		sayit(current);
 		bad();
 	}
-	finalTranscript = "";
 }
 
 function next() {
 	let items = [];
-	for (var i = min_number; i <= max_number; i++) {
-		for (var ii = 0; ii < Math.ceil(results[i] * random_multipler); ii++) {
+	Object.keys(results).forEach(function (i) {
+		for (var ii = 0; ii < Math.ceil(results[i] * randomMultipler); ii++) {
 			items.push(i);
 		}
-	}
+	});
 
 	console.log(items);
-	if(items.length == 0){
+	if (items.length == 0) {
+		$(".output").hide();
 		$("#game").html("<h1 style='text-align:center; margin-top: 50px;'>YOU WIN!!!</h1>")
 		sayit("You win");
 		return;
@@ -54,41 +68,41 @@ function next() {
 
 
 	// Get new number but different then last number
-	let new_number = null;
-	numbers_remaining = [...new Set(items)].length;
-	while(true){
-		new_number = items[Math.floor(Math.random() * items.length)];
-		if(numbers_remaining == 1 || new_number != current){
+	let newNumber = null;
+	numbersRemaining = [...new Set(items)].length;
+	while (true) {
+		newNumber = items[Math.floor(Math.random() * items.length)];
+		if (numbersRemaining == 1 || newNumber != current) {
 			break;
 		}
 	}
 
-	current = new_number;
+	current = newNumber;
 	console.log(current);
-	$("#the_number").fadeTo("fast", 0, function(){
+	$("#the_number").fadeTo("fast", 0, function () {
 		console.log("done fading out");
 		$("#the_number").html(current);
-		$("#the_number").fadeTo("fast", 1, function(){
+		$("#the_number").fadeTo("fast", 1, function () {
 			console.log("done fading back in");
 			recognition.start();
-			timer1 = window.setTimeout(function(){
+			timer1 = window.setTimeout(function () {
 				recognition.stop();
-			}, 6000);
+			}, timeout * 1000);
 		});
 	});
 }
 
 
-function sayit(msg_text) {
+function sayit(msgText) {
 	var msg = new SpeechSynthesisUtterance();
-	msg.text = msg_text;
+	msg.text = msgText;
 	window.speechSynthesis.speak(msg);
 }
 
 function bad() {
 	results[current] = Math.min(2, results[current] + 1);
 	window.clearTimeout(timer1);
-	window.setTimeout(function(){
+	window.setTimeout(function () {
 		next();
 	}, 500);
 }

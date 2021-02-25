@@ -1,34 +1,41 @@
 var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition
-var SpeechGrammarList = SpeechGrammarList || webkitSpeechGrammarList
-var SpeechRecognitionEvent = SpeechRecognitionEvent || webkitSpeechRecognitionEvent
+// var SpeechGrammarList = SpeechGrammarList || webkitSpeechGrammarList
+// var SpeechRecognitionEvent = SpeechRecognitionEvent || webkitSpeechRecognitionEvent
 
 
-var numbers = [];
-for(var i=0;i<=20;i++){
-	numbers.push(String(i));
-}
-// var grammar = '#JSGF V1.0; grammar numbers; public <number> = ' + numbers.join(' | ') + ' ;'
-var grammar = '#JSGF V1.0; grammar numbers; public <number> = dog | cat ;'
+// var numbers = [];
+// for(var i=0;i<=20;i++){
+// 	numbers.push(String(i));
+// }
+// // var grammar = '#JSGF V1.0; grammar numbers; public <number> = ' + numbers.join(' | ') + ' ;'
+// var grammar = '#JSGF V1.0; grammar numbers; public <number> = dog | cat ;'
 
-console.log(grammar);
+// console.log(grammar);
 
 var diagnostic = document.querySelector('.output');
-var finalTranscript = '';
-var recognition = new SpeechRecognition();
-var speechRecognitionList = new SpeechGrammarList();
 
-speechRecognitionList.addFromString(grammar, 1);
-recognition.grammars = speechRecognitionList;
+var recognition = new SpeechRecognition();
+// var speechRecognitionList = new SpeechGrammarList();
+
+// speechRecognitionList.addFromString(grammar, 1);
+// recognition.grammars = speechRecognitionList;
 recognition.interimResults = false;
-recognition.maxAlternatives = 1;
+recognition.maxAlternatives = 10;
 recognition.continuous = false;
 recognition.lang = 'en-US';
+recognition.finalTranscript = [];
+
+recognition.onaudiostart = (event) => {
+	recognition.finalTranscript = [];
+}
 
 recognition.onresult = (event) => {
-	var number = event.results[0][0].transcript;
-	finalTranscript = number;
-	diagnostic.textContent = 'Result received: ' + number + '.';	
-	console.log('Confidence: ' + event.results[0][0].confidence);
+	console.log(event);
+	let results = event.results[0];
+	for(var i=0;i<results.length;i++){
+		recognition.finalTranscript.push(results[i].transcript);
+	}
+	diagnostic.textContent = 'Result received: ' + recognition.finalTranscript.join(", ") + '.';		
 }
 
 recognition.onspeechend = function() {
