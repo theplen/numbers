@@ -1,0 +1,40 @@
+#the_number {
+	font-size: max(30vh, 20em);
+	text-align: center;
+}
+
+#good {
+	background-color: green;
+	width: 49%;
+	height: 100px;
+}
+
+#bad {
+	background-color: red;
+	width: 49%;
+	height: 100px;
+}
+
+#sound {
+	width: 33%;
+	height: 100px;
+}
+
+#start {
+	width: 66%;
+	height: 200px;
+}
+
+#game {
+	width: 100%;
+	display: none;
+}
+
+#header{
+	text-align: left;
+}
+
+.start{
+	text-align: center;
+	margin-top: 50px;
+}

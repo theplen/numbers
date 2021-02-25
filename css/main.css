@@ -1,0 +1,17 @@
+body{
+	font-family: 'Arial', 'Courier New', Courier, monospace;
+}
+#header {
+	margin-bottom: 20px;
+	text-align: center;
+}
+
+label{
+	display:block;
+	margin-top: 10px;
+}
+
+input[type=submit]{
+	display: block;
+	margin-top: 10px;
+}
